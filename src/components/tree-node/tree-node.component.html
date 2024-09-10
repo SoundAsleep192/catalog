@@ -1,0 +1,9 @@
+<div class="wrapper"
+  [style.margin-left.rem]="0.75 * node().nestingLevel"
+>
+  <mat-icon
+    [fontIcon]="node().nodeType === 'Folder' ? 'folder' : 'insert_drive_file'"
+  >
+  </mat-icon>
+  {{ node().name }}
+</div>
