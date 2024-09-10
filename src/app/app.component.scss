@@ -1,7 +1,18 @@
 :host {
+  height: 100vh;
+  width: 100vw;
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  display: flex;
+  position: absolute;
+  top: 10rem;
 }
 
 .panel {
   display: flex;
+  min-height: 20rem;
 }
