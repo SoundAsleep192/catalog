@@ -42,7 +42,6 @@ export class TreeContentComponent {
   dataSource = treeData;
 
   childrenAccessor = (node: TreeNode): TreeNode[] => {
-    console.log(node);
     return node.children ?? [];
   };
 
