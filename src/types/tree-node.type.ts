@@ -4,5 +4,6 @@ export type TreeNode = {
   id: string;
   name: string;
   nodeType: NodeType;
+  isExpanded?: boolean;
   children?: TreeNode[];
 };

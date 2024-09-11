@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TreeToolbarComponent } from "../tree-toolbar/tree-toolbar.component";
-import { TreeContentComponent } from "../tree-content/tree-content.component";
+import { TreeToolbarComponent } from '../tree-toolbar/tree-toolbar.component';
+import { TreeContentComponent } from '../tree-content/tree-content.component';
 
 @Component({
   selector: 'app-tree',
@@ -8,8 +8,6 @@ import { TreeContentComponent } from "../tree-content/tree-content.component";
   imports: [TreeToolbarComponent, TreeContentComponent],
   templateUrl: './tree.component.html',
   styleUrl: './tree.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeComponent {
-
-}
+export class TreeComponent {}

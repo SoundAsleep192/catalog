@@ -9,8 +9,33 @@ import { generateRandomNodes } from '../functions/generate-random-nodes.function
 import type { TreeState } from '../types/tree-state.type';
 import type { TreeNode } from '../types/tree-node.type';
 
+const defaultNodes: TreeNode[] = [
+  {
+    id: '1',
+    name: 'houses',
+    nodeType: NodeType.Folder,
+    children: [
+      {
+        id: '2',
+        name: 'big house',
+        nodeType: NodeType.Element,
+      },
+      {
+        id: '3',
+        name: 'small house',
+        nodeType: NodeType.Element,
+      },
+      {
+        id: '4',
+        name: 'palace',
+        nodeType: NodeType.Element,
+      },
+    ],
+  },
+];
+
 const initialState: TreeState = {
-  nodes: [],
+  nodes: defaultNodes,
   selectedNodeId: '',
 };
 
@@ -88,6 +113,21 @@ export const TreeStore = signalStore(
     },
     selectNode(node: TreeNode): void {
       patchState(store, (state) => ({ ...state, selectedNodeId: node.id }));
+    },
+    setExpansion(node: TreeNode, expanded: boolean): void {
+      patchState(store, (state) => {
+        const nodes = produce(state.nodes, (draft) => {
+          const destinationNode = findNodeById(draft, node.id);
+
+          if (!destinationNode) {
+            return;
+          }
+
+          destinationNode.isExpanded = expanded;
+        });
+
+        return { ...state, nodes };
+      });
     },
   }))
 );

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
+import { TreeStore } from '../../store/tree.store';
 
 @Component({
   selector: 'app-tree-toolbar',
@@ -11,4 +12,14 @@ import { MatTooltip } from '@angular/material/tooltip';
   styleUrl: './tree-toolbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeToolbarComponent {}
+export class TreeToolbarComponent {
+  readonly store = inject(TreeStore);
+
+  insertElements(): void {
+    this.store.insertMultipleElements(this.store.selectedNodeId());
+  }
+
+  insertFolders(): void {
+    this.store.insertMultipleFolders(this.store.selectedNodeId());
+  }
+}

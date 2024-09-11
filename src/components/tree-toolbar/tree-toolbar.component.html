@@ -1,6 +1,14 @@
-<button mat-icon-button matTooltip="Insert 50 random elements">
+<button
+  mat-icon-button
+  matTooltip="Insert 50 random elements"
+  (click)="insertElements()"
+>
   <mat-icon>note_add</mat-icon>
 </button>
-<button mat-icon-button matTooltip="Insert 50 random folders">
+<button
+  mat-icon-button
+  matTooltip="Insert 50 random folders"
+  (click)="insertFolders()"
+>
   <mat-icon>create_new_folder</mat-icon>
 </button>
