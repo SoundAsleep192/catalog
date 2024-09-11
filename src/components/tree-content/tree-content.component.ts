@@ -1,41 +1,52 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatTreeModule } from '@angular/material/tree';
 import { NodeType } from '../../constants/node-type.const';
-import { TreeNodeComponent } from '../tree-node/tree-node.component';
-import type { DisplayedTreeNode } from '../../types/displayed-tree-node.type';
+import type { TreeNode } from '../../types/tree-node.type';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
+const treeData: TreeNode[] = [
+  {
+    id: '1',
+    name: 'houses',
+    nodeType: NodeType.Folder,
+    children: [
+      {
+        id: '2',
+        name: 'big house',
+        nodeType: NodeType.Element,
+      },
+      {
+        id: '3',
+        name: 'small house',
+        nodeType: NodeType.Element,
+      },
+      {
+        id: '4',
+        name: 'palace',
+        nodeType: NodeType.Element,
+      },
+    ],
+  },
+];
 
 @Component({
   selector: 'app-tree-content',
   standalone: true,
-  imports: [TreeNodeComponent],
+  imports: [MatTreeModule, MatIconModule, MatButtonModule],
   templateUrl: './tree-content.component.html',
   styleUrl: './tree-content.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeContentComponent {
-  readonly displayedTreeNodes: DisplayedTreeNode[] = [
-    {
-      id: '1',
-      name: 'houses',
-      nodeType: NodeType.Folder,
-      nestingLevel: 0,
-    },
-    {
-      id: '2',
-      name: 'big house',
-      nodeType: NodeType.Element,
-      nestingLevel: 1,
-    },
-    {
-      id: '3',
-      name: 'small house',
-      nodeType: NodeType.Element,
-      nestingLevel: 1,
-    },
-    {
-      id: '4',
-      name: 'palace',
-      nodeType: NodeType.Element,
-      nestingLevel: 1,
-    },
-  ];
+  dataSource = treeData;
+
+  childrenAccessor = (node: TreeNode): TreeNode[] => {
+    console.log(node);
+    return node.children ?? [];
+  };
+
+  constructor() {}
+
+  hasChildren = (_: number, node: TreeNode) => node.children;
 }

@@ -12,12 +12,7 @@ import { multipleNodesAmount } from '../constants/multiple-nodes-amount.const';
 import { findNodeById } from '../functions/find-node-by-id.function';
 import { generateRandomNodes } from '../functions/generate-random-nodes.function';
 
-export const initialState: TreeNode = {
-  id: '1',
-  name: 'root',
-  nodeType: NodeType.Folder,
-  children: [],
-};
+const initialState: TreeNode[] = [];
 
 export const treeReducer = createReducer(
   initialState,
@@ -25,7 +20,7 @@ export const treeReducer = createReducer(
     const nextState = produce(state, (draft) => {
       const destinationNode = findNodeById(draft, destinationId);
 
-      if (destinationNode === null) {
+      if (!destinationNode?.children) {
         return;
       }
 
@@ -38,7 +33,7 @@ export const treeReducer = createReducer(
     const nextState = produce(state, (draft) => {
       const destinationNode = findNodeById(draft, destinationId);
 
-      if (destinationNode === null) {
+      if (!destinationNode?.children) {
         return;
       }
 
@@ -53,7 +48,7 @@ export const treeReducer = createReducer(
       const nextState = produce(state, (draft) => {
         const destinationNode = findNodeById(draft, destinationId);
 
-        if (destinationNode === null) {
+        if (!destinationNode?.children) {
           return;
         }
 
@@ -70,7 +65,7 @@ export const treeReducer = createReducer(
       const nextState = produce(state, (draft) => {
         const destinationNode = findNodeById(draft, destinationId);
 
-        if (destinationNode === null) {
+        if (!destinationNode?.children) {
           return;
         }
 

@@ -1,19 +1,21 @@
 import type { TreeNode } from '../types/tree-node.type';
 
-export function findNodeById(node: TreeNode, id: string): TreeNode | null {
-  if (node.id === id) {
-    return node;
-  }
+export function findNodeById(nodes: TreeNode[], id: string): TreeNode | null {
+  const queue: TreeNode[] = [...nodes];
 
-  let result: TreeNode | null = null;
+  let nextNode = queue.pop();
 
-  for (const childNode of node.children) {
-    result = findNodeById(childNode, id);
-
-    if (result !== null) {
-      return result;
+  while (nextNode) {
+    if (nextNode.id === id) {
+      return nextNode;
     }
+
+    if (nextNode.children) {
+      queue.unshift(...nextNode.children);
+    }
+
+    nextNode = queue.pop();
   }
 
-  return result;
+  return null;
 }
