@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import type { DisplayedTreeNode } from '../types/displayed-tree-node.type';
 import { JsonPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import type { DisplayedTreeNode } from '../../types/displayed-tree-node.type';
 
 @Component({
   selector: 'app-tree-node',

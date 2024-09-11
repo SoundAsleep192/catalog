@@ -1,1 +1,21 @@
-@import "../node_modules/@angular/material/prebuilt-themes/azure-blue.css";
+@use "@angular/material" as mat;
+@use "./app/app-theme" as app;
+
+@include mat.core();
+
+$theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+html {
+  @include app.theme($theme);
+}

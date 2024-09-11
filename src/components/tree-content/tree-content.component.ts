@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import type { DisplayedTreeNode } from '../types/displayed-tree-node.type';
 import { NodeType } from '../../constants/node-type.const';
 import { TreeNodeComponent } from '../tree-node/tree-node.component';
+import type { DisplayedTreeNode } from '../../types/displayed-tree-node.type';
 
 @Component({
   selector: 'app-tree-content',

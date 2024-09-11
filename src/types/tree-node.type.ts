@@ -1,4 +1,4 @@
-import type { NodeType } from "../../constants/node-type.const"
+import type { NodeType } from "../constants/node-type.const"
 
 export type TreeNode = {
   id: string,

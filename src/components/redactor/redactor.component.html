@@ -1,1 +1,17 @@
-<p>redactor works!</p>
+<form class="form">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="Enter name..." />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Icon</mat-label>
+    <mat-select>
+      @for (icon of icons; track $index) {
+      <mat-option>
+        <mat-icon [fontIcon]="icon"></mat-icon>
+        {{ iconNames[$index] }}
+      </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</form>
