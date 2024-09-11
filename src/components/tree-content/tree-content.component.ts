@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatTreeModule } from '@angular/material/tree';
-import { NodeType } from '../../constants/node-type.const';
-import type { TreeNode } from '../../types/tree-node.type';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { NodeType } from '../../constants/node-type.const';
+import type { TreeNode } from '../../types/tree-node.type';
+import { TreeStore } from '../../store/tree.store';
 
 const treeData: TreeNode[] = [
   {
@@ -41,23 +42,22 @@ type FlatNode = TreeNode & { isExpanded: boolean };
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeContentComponent {
-  dataSource: FlatNode[] = treeData.map((node) => ({
+  readonly store = inject(TreeStore);
+
+  readonly dataSource: FlatNode[] = treeData.map((node) => ({
     ...node,
     isExpanded: false,
   }));
 
-  selectedNodeId = '';
-
-  childrenAccessor = (node: TreeNode): TreeNode[] => {
+  readonly childrenAccessor = (node: TreeNode): TreeNode[] => {
     return node.children ?? [];
   };
 
-  hasChildren = (_: number, node: TreeNode): boolean => !!node.children;
-
-  isSelected = (node: TreeNode): boolean => node.id === this.selectedNodeId;
+  readonly hasChildren = (_: number, node: TreeNode): boolean =>
+    !!node.children;
 
   select(node: TreeNode): void {
-    this.selectedNodeId = node.id;
+    this.store.selectNode(node);
   }
 
   onExpandedChange(node: FlatNode, expanded: boolean): void {

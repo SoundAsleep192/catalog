@@ -8,7 +8,7 @@
     <mat-icon class="element-icon">insert_drive_file</mat-icon>
     <span
       class="element-name"
-      [class.selected]="isSelected(node)"
+      [class.selected]="store.selectedNodeId() === node.id"
       (click)="select(node)"
     >
       {{ node.name }}
@@ -33,9 +33,10 @@
     </button>
     <span
       class="element-name"
-      [class.selected]="isSelected(node)"
+      [class.selected]="store.selectedNodeId() === node.id"
       (click)="select(node)"
-      >{{ node.name }}
+    >
+      {{ node.name }}
     </span>
   </mat-tree-node>
 </mat-tree>
