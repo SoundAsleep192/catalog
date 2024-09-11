@@ -30,6 +30,8 @@ const treeData: TreeNode[] = [
   },
 ];
 
+type FlatNode = TreeNode & { isExpanded: boolean };
+
 @Component({
   selector: 'app-tree-content',
   standalone: true,
@@ -39,13 +41,26 @@ const treeData: TreeNode[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeContentComponent {
-  dataSource = treeData;
+  dataSource: FlatNode[] = treeData.map((node) => ({
+    ...node,
+    isExpanded: false,
+  }));
+
+  selectedNodeId = '';
 
   childrenAccessor = (node: TreeNode): TreeNode[] => {
     return node.children ?? [];
   };
 
-  constructor() {}
+  hasChildren = (_: number, node: TreeNode): boolean => !!node.children;
 
-  hasChildren = (_: number, node: TreeNode) => node.children;
+  isSelected = (node: TreeNode): boolean => node.id === this.selectedNodeId;
+
+  select(node: TreeNode): void {
+    this.selectedNodeId = node.id;
+  }
+
+  onExpandedChange(node: FlatNode, expanded: boolean): void {
+    node.isExpanded = expanded;
+  }
 }

@@ -1,4 +1,4 @@
-import type { NodeType } from '../constants/node-type.const';
+import { NodeType } from '../constants/node-type.const';
 import type { TreeNode } from '../types/tree-node.type';
 
 export function generateRandomNodes(
@@ -12,7 +12,7 @@ export function generateRandomNodes(
       id: crypto.randomUUID(),
       name: Math.random().toString(36).substring(2, 5),
       nodeType,
-      children: [],
+      children: nodeType === NodeType.Folder ? [] : undefined,
     };
 
     randomElements.push(randomElement);

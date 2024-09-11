@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "./app/app-theme" as app;
+@use "./components/tree-content/tree-content-theme" as tree-content;
 
 @include mat.core();
 
@@ -18,4 +19,5 @@ $theme: mat.define-theme(
 
 html {
   @include app.theme($theme);
+  @include tree-content.theme($theme);
 }
