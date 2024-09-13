@@ -1,11 +1,13 @@
 <mat-tree
+  #tree
   class="empty-background"
-  [dataSource]="store.nodes()"
+  [dataSource]="store.roots()"
   [childrenAccessor]="childrenAccessor"
-  [expansionKey]=""
+  [trackBy]="trackBy"
+  [expansionKey]="expansionKey"
 >
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-    <mat-icon class="element-icon">insert_drive_file</mat-icon>
+    <mat-icon>{{ node.icon }}</mat-icon>
     <span
       class="element-name"
       [class.selected]="store.selectedNodeId() === node.id"
@@ -20,16 +22,15 @@
     *matTreeNodeDef="let node; when: hasChildren"
     matTreeNodePadding
     [cdkTreeNodeTypeaheadLabel]="node.name"
-    isExpandable
-    (expandedChange)="onExpandedChange(node, $event)"
+    [isExpandable]="true"
   >
     <button
-      mat-icon-button
       matTreeNodeToggle
+      mat-icon-button
       [attr.aria-label]="'Toggle ' + node.name"
     >
-      <mat-icon class="element-icon">
-        {{ node.isExpanded ? "folder_open" : "folder" }}
+      <mat-icon>
+        {{ tree.isExpanded(node) ? "folder_open" : "folder" }}
       </mat-icon>
     </button>
     <span

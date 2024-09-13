@@ -1,11 +1,17 @@
+@if (store.selectedNode()) { node id: {{ store.selectedNode().id }}
 <form class="form">
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input matInput placeholder="Enter name..." />
+    <input
+      matInput
+      placeholder="Enter name..."
+      name="name"
+      [ngModel]="store.selectedNode().name"
+    />
   </mat-form-field>
   <mat-form-field>
     <mat-label>Icon</mat-label>
-    <mat-select>
+    <mat-select name="icon" [ngModel]="store.selectedNode().icon">
       @for (icon of icons; track $index) {
       <mat-option>
         <mat-icon [fontIcon]="icon"></mat-icon>
@@ -15,3 +21,6 @@
     </mat-select>
   </mat-form-field>
 </form>
+} @else {
+<div class="placeholder">Select a tree node...</div>
+}

@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TreeStore } from '../../store/tree.store';
+import { NodeType } from '../../constants/node-type.const';
 
 @Component({
   selector: 'app-tree-toolbar',
@@ -16,10 +17,14 @@ export class TreeToolbarComponent {
   readonly store = inject(TreeStore);
 
   insertElements(): void {
-    this.store.insertMultipleElements(this.store.selectedNodeId());
+    const selectedNodeId = this.store.selectedNodeId();
+
+    this.store.addRandomNodes(NodeType.Element, selectedNodeId);
   }
 
   insertFolders(): void {
-    this.store.insertMultipleFolders(this.store.selectedNodeId());
+    const selectedNodeId = this.store.selectedNodeId();
+
+    this.store.addRandomNodes(NodeType.Folder, selectedNodeId);
   }
 }

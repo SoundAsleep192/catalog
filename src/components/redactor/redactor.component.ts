@@ -1,19 +1,23 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ElementIcons } from '../../constants/element-icons.const';
+import { ElementIcon } from '../../constants/element-icons.const';
 import { MatIconModule } from '@angular/material/icon';
-import { TitleCasePipe } from '@angular/common';
+import { TreeStore } from '../../store/tree.store';
 
 @Component({
   selector: 'app-redactor',
   standalone: true,
-  imports: [MatInputModule, MatSelectModule, MatIconModule, TitleCasePipe],
+  imports: [MatInputModule, MatSelectModule, MatIconModule, FormsModule],
   templateUrl: './redactor.component.html',
   styleUrl: './redactor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RedactorComponent {
-  readonly icons = Object.values(ElementIcons);
-  readonly iconNames = Object.keys(ElementIcons);
+  readonly icons = Object.values(ElementIcon);
+  readonly iconNames = Object.keys(ElementIcon);
+
+  readonly store = inject(TreeStore);
 }

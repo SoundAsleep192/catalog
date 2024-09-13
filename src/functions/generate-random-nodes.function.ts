@@ -1,3 +1,4 @@
+import { ElementIcon } from '../constants/element-icons.const';
 import { NodeType } from '../constants/node-type.const';
 import type { TreeNode } from '../types/tree-node.type';
 
@@ -12,6 +13,7 @@ export function generateRandomNodes(
       id: crypto.randomUUID(),
       name: Math.random().toString(36).substring(2, 5),
       nodeType,
+      icon: nodeType === NodeType.Folder ? undefined : ElementIcon.Default,
       children: nodeType === NodeType.Folder ? [] : undefined,
     };
 

@@ -1,133 +1,116 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { produce } from 'immer';
+import {
+  getState,
+  patchState,
+  signalStore,
+  type,
+  withComputed,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
+import { addEntity, updateEntity, withEntities } from '@ngrx/signals/entities';
 
-import { findNodeById } from '../functions/find-node-by-id.function';
 import { multipleNodesAmount } from '../constants/multiple-nodes-amount.const';
 import { NodeType } from '../constants/node-type.const';
 import { generateRandomNodes } from '../functions/generate-random-nodes.function';
 
-import type { TreeState } from '../types/tree-state.type';
 import type { TreeNode } from '../types/tree-node.type';
+import { ElementIcon } from '../constants/element-icons.const';
+import { computed } from '@angular/core';
 
-const defaultNodes: TreeNode[] = [
+const defaultParent: TreeNode = {
+  id: '1',
+  name: 'houses',
+  nodeType: NodeType.Folder,
+  children: [],
+};
+
+const defaultChildren: TreeNode[] = [
   {
-    id: '1',
-    name: 'houses',
-    nodeType: NodeType.Folder,
-    children: [
-      {
-        id: '2',
-        name: 'big house',
-        nodeType: NodeType.Element,
-      },
-      {
-        id: '3',
-        name: 'small house',
-        nodeType: NodeType.Element,
-      },
-      {
-        id: '4',
-        name: 'palace',
-        nodeType: NodeType.Element,
-      },
-    ],
+    id: '2',
+    name: 'big house',
+    nodeType: NodeType.Element,
+    icon: ElementIcon.Apartment,
+  },
+  {
+    id: '3',
+    name: 'small house',
+    nodeType: NodeType.Element,
+    icon: ElementIcon.Apartment,
+  },
+  {
+    id: '4',
+    name: 'palace',
+    nodeType: NodeType.Element,
+    icon: ElementIcon.Apartment,
   },
 ];
 
-const initialState: TreeState = {
-  nodes: defaultNodes,
+interface SelectedNodeIdState {
+  selectedNodeId: string;
+}
+
+const initialState: SelectedNodeIdState = {
   selectedNodeId: '',
 };
 
 export const TreeStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withEntities({ entity: type<TreeNode>(), collection: 'treeNode' }),
+  withComputed(({ treeNodeEntityMap, treeNodeEntities, selectedNodeId }) => ({
+    selectedNode: computed(() => treeNodeEntityMap()[selectedNodeId()]),
+    roots: computed(() =>
+      treeNodeEntities().filter((entity) => !entity.parentId)
+    ),
+  })),
   withMethods((store) => ({
-    insertElement(destinationId: string, element: TreeNode): void {
-      patchState(store, (state) => {
-        const nodes = produce(state.nodes, (draft) => {
-          const destinationNode = findNodeById(draft, destinationId);
+    addNode(node: TreeNode, destinationId?: string): void {
+      const insertedNode: TreeNode = { ...node, parentId: destinationId };
 
-          if (!destinationNode?.children) {
-            return;
-          }
+      patchState(store, addEntity(insertedNode, { collection: 'treeNode' }));
 
-          destinationNode.children.push(element);
-        });
+      if (!destinationId) {
+        return;
+      }
 
-        return { ...state, nodes };
-      });
-    },
-    insertMultipleElements(
-      destinationId: string,
-      amount = multipleNodesAmount
-    ): void {
-      patchState(store, (state) => {
-        const nodes = produce(state.nodes, (draft) => {
-          const destinationNode = findNodeById(draft, destinationId);
-
-          if (!destinationNode?.children) {
-            return;
-          }
-
-          const randomElements = generateRandomNodes(NodeType.Element, amount);
-          destinationNode.children.push(...randomElements);
-        });
-
-        return { ...state, nodes };
-      });
-    },
-    insertFolder(destinationId: string, folder: TreeNode): void {
-      patchState(store, (state) => {
-        const nodes = produce(state.nodes, (draft) => {
-          const destinationNode = findNodeById(draft, destinationId);
-
-          if (!destinationNode?.children) {
-            return;
-          }
-
-          destinationNode.children.push(folder);
-        });
-
-        return { ...state, nodes };
-      });
-    },
-    insertMultipleFolders(
-      destinationId: string,
-      amount = multipleNodesAmount
-    ): void {
-      patchState(store, (state) => {
-        const nodes = produce(state.nodes, (draft) => {
-          const destinationNode = findNodeById(draft, destinationId);
-
-          if (!destinationNode?.children) {
-            return;
-          }
-
-          const randomFolders = generateRandomNodes(NodeType.Folder, amount);
-          destinationNode.children.push(...randomFolders);
-        });
-
-        return { ...state, nodes };
-      });
+      patchState(
+        store,
+        updateEntity(
+          {
+            id: destinationId,
+            changes: (entity) => ({
+              children: entity.children
+                ? [...entity.children, node.id]
+                : undefined,
+            }),
+          },
+          { collection: 'treeNode' }
+        )
+      );
     },
     selectNode(node: TreeNode): void {
       patchState(store, (state) => ({ ...state, selectedNodeId: node.id }));
     },
-    setExpansion(node: TreeNode, expanded: boolean): void {
-      patchState(store, (state) => {
-        const nodes = produce(state.nodes, (draft) => {
-          const destinationNode = findNodeById(draft, node.id);
-
-          if (!destinationNode) {
-            return;
-          }
-
-          destinationNode.isExpanded = expanded;
-        });
-
-        return { ...state, nodes };
-      });
+  })),
+  withMethods((store) => ({
+    addRandomNodes(
+      nodeType: NodeType,
+      destinationId: string,
+      amount = multipleNodesAmount
+    ): void {
+      const randomNodes: TreeNode[] = generateRandomNodes(nodeType, amount);
+      randomNodes.forEach((randomNode) =>
+        store.addNode(randomNode, destinationId)
+      );
     },
-  }))
+  })),
+  withHooks({
+    onInit(store) {
+      store.addNode(defaultParent);
+      defaultChildren.forEach((childNode) =>
+        store.addNode(childNode, defaultParent.id)
+      );
+    },
+  })
 );
