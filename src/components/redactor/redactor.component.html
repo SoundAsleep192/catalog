@@ -1,4 +1,10 @@
-@if (store.selectedNode()) { node id: {{ store.selectedNode().id }}
+@if (store.selectedNode()) {
+<div class="node-id">
+  node id:
+  <span [matTooltip]="store.selectedNode().id" matTooltipPositionAtOrigin>
+    {{ store.selectedNode().id }}</span
+  >
+</div>
 <form class="form">
   <mat-form-field>
     <mat-label>Name</mat-label>

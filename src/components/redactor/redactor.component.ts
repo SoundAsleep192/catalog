@@ -5,13 +5,14 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, type NgModel } from '@angular/forms';
+import { FormsModule, type NgModel } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ElementIcon } from '../../constants/element-icons.const';
 import { MatIconModule } from '@angular/material/icon';
 import { TreeStore } from '../../store/tree.store';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-redactor',
@@ -19,9 +20,9 @@ import { TreeStore } from '../../store/tree.store';
   imports: [
     MatInputModule,
     MatSelectModule,
+    MatTooltipModule,
     MatIconModule,
     FormsModule,
-    ReactiveFormsModule,
   ],
   templateUrl: './redactor.component.html',
   styleUrl: './redactor.component.scss',

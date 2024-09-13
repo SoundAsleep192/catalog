@@ -1,3 +1,13 @@
+:host {
+  max-width: 244px;
+}
+
+.node-id {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .form {
   display: flex;
   flex-direction: column;
