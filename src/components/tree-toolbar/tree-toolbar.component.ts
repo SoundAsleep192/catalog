@@ -19,12 +19,12 @@ export class TreeToolbarComponent {
   insertElements(): void {
     const selectedNodeId = this.store.selectedNodeId();
 
-    this.store.addRandomNodes(NodeType.Element, selectedNodeId);
+    this.store.insertRandomNodes(NodeType.Element, selectedNodeId);
   }
 
   insertFolders(): void {
     const selectedNodeId = this.store.selectedNodeId();
 
-    this.store.addRandomNodes(NodeType.Folder, selectedNodeId);
+    this.store.insertRandomNodes(NodeType.Folder, selectedNodeId);
   }
 }

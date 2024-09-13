@@ -1,5 +1,4 @@
 import {
-  getState,
   patchState,
   signalStore,
   type,
@@ -89,12 +88,28 @@ export const TreeStore = signalStore(
         )
       );
     },
+    updateNodeName({ id }: TreeNode, name: string): void {
+      patchState(
+        store,
+        updateEntity({ id, changes: { name } }, { collection: 'treeNode' })
+      );
+    },
+    updateNodeIcon({ id, nodeType }: TreeNode, icon: ElementIcon): void {
+      if (nodeType === NodeType.Folder) {
+        return;
+      }
+
+      patchState(
+        store,
+        updateEntity({ id, changes: { icon } }, { collection: 'treeNode' })
+      );
+    },
     selectNode(node: TreeNode): void {
       patchState(store, (state) => ({ ...state, selectedNodeId: node.id }));
     },
   })),
   withMethods((store) => ({
-    addRandomNodes(
+    insertRandomNodes(
       nodeType: NodeType,
       destinationId: string,
       amount = multipleNodesAmount

@@ -1,6 +1,9 @@
 <button
   mat-icon-button
   matTooltip="Insert 50 random elements"
+  [disabled]="
+    !store.selectedNode() || store.selectedNode().nodeType !== 'Folder'
+  "
   (click)="insertElements()"
 >
   <mat-icon>note_add</mat-icon>
@@ -8,6 +11,9 @@
 <button
   mat-icon-button
   matTooltip="Insert 50 random folders"
+  [disabled]="
+    !store.selectedNode() || store.selectedNode().nodeType !== 'Folder'
+  "
   (click)="insertFolders()"
 >
   <mat-icon>create_new_folder</mat-icon>
