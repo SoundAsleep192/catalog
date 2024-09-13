@@ -7,7 +7,12 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { addEntity, updateEntity, withEntities } from '@ngrx/signals/entities';
+import {
+  addEntity,
+  removeEntity,
+  updateEntity,
+  withEntities,
+} from '@ngrx/signals/entities';
 
 import { multipleNodesAmount } from '../constants/multiple-nodes-amount.const';
 import { NodeType } from '../constants/node-type.const';
@@ -82,6 +87,26 @@ export const TreeStore = signalStore(
               children: entity.children
                 ? [...entity.children, node.id]
                 : undefined,
+            }),
+          },
+          { collection: 'treeNode' }
+        )
+      );
+    },
+    removeNode({ id, parentId }: TreeNode): void {
+      patchState(store, removeEntity(id, { collection: 'treeNode' }));
+
+      if (!parentId) {
+        return;
+      }
+
+      patchState(
+        store,
+        updateEntity(
+          {
+            id: parentId,
+            changes: (entity) => ({
+              children: entity?.children?.filter((childId) => childId !== id),
             }),
           },
           { collection: 'treeNode' }

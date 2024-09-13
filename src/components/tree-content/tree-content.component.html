@@ -1,12 +1,20 @@
 <mat-tree
   #tree
-  class="empty-background"
+  cdkDropList
+  class="tree"
   [dataSource]="store.roots()"
-  [childrenAccessor]="childrenAccessor"
+  [childrenAccessor]="getChildren"
   [trackBy]="trackBy"
   [expansionKey]="expansionKey"
 >
-  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+  <mat-tree-node
+    *matTreeNodeDef="let node"
+    matTreeNodePadding
+    cdkDrag
+    [cdkDragData]="node"
+    (cdkDragDropped)="drop($event)"
+  >
+    <div *cdkDragPlaceholder style="height: 0px"></div>
     <mat-icon>{{ node.icon }}</mat-icon>
     <span
       class="element-name"
@@ -17,13 +25,16 @@
     </span>
   </mat-tree-node>
 
-  <!-- Bug: expansion lags -->
   <mat-tree-node
     *matTreeNodeDef="let node; when: hasChildren"
     matTreeNodePadding
     [cdkTreeNodeTypeaheadLabel]="node.name"
     [isExpandable]="true"
+    cdkDrag
+    [cdkDragData]="node"
+    (cdkDragDropped)="drop($event)"
   >
+    <div *cdkDragPlaceholder style="height: 0px"></div>
     <button
       matTreeNodeToggle
       mat-icon-button
