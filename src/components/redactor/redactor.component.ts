@@ -47,7 +47,13 @@ export class RedactorComponent {
       return;
     }
 
+    if (!this.name()) {
+      return;
+    }
+
     this.store.updateNodeName(this.store.selectedNode(), this.name());
+
+    this.name.set('');
   }
 
   updateIcon(icon: ElementIcon): void {
